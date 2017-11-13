@@ -12,11 +12,11 @@ account and you make sure to delete old keys from your account.
 
 #### Binaries
 
-- **darwin** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-darwin-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-darwin-amd64)
-- **freebsd** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-freebsd-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-freebsd-amd64)
-- **linux** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-linux-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-linux-amd64) / [arm](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-linux-arm) / [arm64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-linux-arm64)
-- **solaris** [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-solaris-amd64)
-- **windows** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-windows-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.1/sshb0t-windows-amd64)
+- **darwin** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-darwin-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-darwin-amd64)
+- **freebsd** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-freebsd-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-freebsd-amd64)
+- **linux** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-linux-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-linux-amd64) / [arm](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-linux-arm) / [arm64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-linux-arm64)
+- **solaris** [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-solaris-amd64)
+- **windows** [386](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-windows-386) / [amd64](https://github.com/jessfraz/sshb0t/releases/download/v0.0.2/sshb0t-windows-amd64)
 
 #### Via Go
 
@@ -42,7 +42,7 @@ $ docker run -d --restart always \
 \__ \__ \ | | | |_) | |_| | |_
 |___/___/_| |_|_.__/ \___/ \__|
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
- Version: v0.0.1
+ Version: v0.0.2
   -d    run in debug mode
   -interval string
         update interval (ex. 5ms, 10s, 1m, 3h) (default "30s")
