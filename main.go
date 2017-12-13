@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/jessfraz/sshb0t/version"
+	"github.com/jessfraz/sshb0t/util/version"
 )
 
 const (
