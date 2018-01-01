@@ -1,14 +1,32 @@
-# Builder image
-FROM golang:alpine AS builder
-WORKDIR /go/src/github.com/jessfraz/sshb0t
-COPY . .
-RUN GOOS=linux CGO_ENABLED=0 go build -o sshb0t
+FROM golang:alpine as builder
+MAINTAINER Jessica Frazelle <jess@linux.com>
 
-# Final image
-FROM alpine
-LABEL maintainer "Jessica Frazelle <jess@linux.com>"
+ENV PATH /go/bin:/usr/local/go/bin:$PATH
+ENV GOPATH /go
+
 RUN	apk add --no-cache \
-    ca-certificates \
-    git
-COPY --from=builder /go/src/github.com/jessfraz/sshb0t/sshb0t /usr/bin/sshb0t
-ENTRYPOINT ["sshb0t"]
+	ca-certificates
+
+COPY . /go/src/github.com/jessfraz/sshb0t
+
+RUN set -x \
+	&& apk add --no-cache --virtual .build-deps \
+		git \
+		gcc \
+		libc-dev \
+		libgcc \
+		make \
+	&& cd /go/src/github.com/jessfraz/sshb0t \
+	&& make static \
+	&& mv sshb0t /usr/bin/sshb0t \
+	&& apk del .build-deps \
+	&& rm -rf /go \
+	&& echo "Build complete."
+
+FROM scratch
+
+COPY --from=builder /usr/bin/sshb0t /usr/bin/sshb0t
+COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs
+
+ENTRYPOINT [ "sshb0t" ]
+CMD [ "--help" ]
