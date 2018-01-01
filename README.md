@@ -30,7 +30,7 @@ $ go get github.com/jessfraz/sshb0t
 $ docker run -d --restart always \
     --name sshb0t \
     -v ${HOME}/.ssh/authorized_keys:/root/.ssh/authorized_keys \
-    r.j3ss.co/sshb0t --user jessfraz
+    r.j3ss.co/sshb0t --user jessfraz --keyfile /root/.ssh/authorized_keys
 ```
 
 ## Usage
