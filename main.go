@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/jessfraz/sshb0t/version"
+	"github.com/sirupsen/logrus"
 )
 
 const (
