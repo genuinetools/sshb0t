@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	defaultGitHubKeyURI          string = "https://github.com/%s.keys"
+	defaultGitHubKeyURI          string = "https://%s/%s.keys"
 	defaultSSHAuthorizedKeysFile string = ".ssh/authorized_keys"
 
 	// BANNER is what is printed for help/info output
@@ -35,6 +35,7 @@ const (
 var (
 	home               string
 	authorizedKeysFile string
+	gitURI             string
 	users              stringSlice
 	interval           string
 
@@ -64,6 +65,7 @@ func init() {
 
 	// parse flags
 	flag.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
+	flag.StringVar(&gitURI, "gituri", "github.com", "Add custom git URI (ex. gitlab.com, github.com)")
 	flag.Var(&users, "user", "GitHub usernames for which to fetch keys")
 	flag.StringVar(&interval, "interval", "30s", "update interval (ex. 5ms, 10s, 1m, 3h)")
 
@@ -139,7 +141,7 @@ func main() {
 		var keys string
 		for _, user := range users {
 			// fetch the url
-			url := fmt.Sprintf(defaultGitHubKeyURI, user)
+			url := fmt.Sprintf(defaultGitHubKeyURI, gitURI, user)
 			logrus.Debugf("Fetching keys for user %s from %s", user, url)
 			resp, err := http.Get(url)
 			if err != nil {
