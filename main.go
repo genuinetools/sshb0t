@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
 	"net/http"
 	"os"
-    "github.com/mitchellh/go-homedir"
 	"os/signal"
 	"path/filepath"
 	"strings"
