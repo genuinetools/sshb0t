@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+    "github.com/mitchellh/go-homedir"
 	"os/signal"
-	"os/user"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -183,9 +183,9 @@ func getHomeDir() (string, error) {
 		return home, nil
 	}
 
-	u, err := user.Current()
+	dir, err := homedir.Dir()
 	if err != nil {
 		return "", err
 	}
-	return u.HomeDir, nil
+	return dir, nil
 }

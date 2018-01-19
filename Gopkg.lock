@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/go-homedir"
+  packages = ["."]
+  revision = "b8bc1bf767474819792c23f32d8286a45736f1c6"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
@@ -25,6 +31,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ed0a18b3acac509bbbfab1a15f722a6b463119bc70386ae78f757200e667a8ec"
+  inputs-digest = "6140884eee8e6aa364146a175624e047a7580729f4304372074bc55d7035f05d"
   solver-name = "gps-cdcl"
   solver-version = 1
