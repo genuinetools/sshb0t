@@ -44,3 +44,7 @@ Icon
 
 sshb0t
 cross/
+
+# Go coverage results
+coverage.txt
+profile.out

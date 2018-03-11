@@ -7,7 +7,7 @@ ENV GOPATH /go
 RUN	apk add --no-cache \
 	ca-certificates
 
-COPY . /go/src/github.com/jessfraz/sshb0t
+COPY . /go/src/github.com/genuinetools/sshb0t
 
 RUN set -x \
 	&& apk add --no-cache --virtual .build-deps \
@@ -16,7 +16,7 @@ RUN set -x \
 		libc-dev \
 		libgcc \
 		make \
-	&& cd /go/src/github.com/jessfraz/sshb0t \
+	&& cd /go/src/github.com/genuinetools/sshb0t \
 	&& make static \
 	&& mv sshb0t /usr/bin/sshb0t \
 	&& apk del .build-deps \
