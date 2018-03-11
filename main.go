@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jessfraz/sshb0t/version"
+	"github.com/genuinetools/sshb0t/version"
 	"github.com/sirupsen/logrus"
 )
 
