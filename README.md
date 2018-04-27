@@ -12,11 +12,11 @@ account and you make sure to delete old keys from your account.
 
 #### Binaries
 
-- **darwin** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-darwin-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-darwin-amd64)
-- **freebsd** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-freebsd-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-freebsd-amd64)
-- **linux** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-linux-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-linux-amd64) / [arm](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-linux-arm) / [arm64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-linux-arm64)
-- **solaris** [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-solaris-amd64)
-- **windows** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-windows-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.0/sshb0t-windows-amd64)
+- **darwin** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-darwin-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-darwin-amd64)
+- **freebsd** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-freebsd-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-freebsd-amd64)
+- **linux** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-linux-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-linux-amd64) / [arm](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-linux-arm) / [arm64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-linux-arm64)
+- **solaris** [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-solaris-amd64)
+- **windows** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-windows-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.1/sshb0t-windows-amd64)
 
 #### Via Go
 
@@ -43,7 +43,7 @@ $ sshb0t -h
 \__ \__ \ | | | |_) | |_| | |_
 |___/___/_| |_|_.__/ \___/ \__|
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
- Version: v0.3.0
+ Version: v0.3.1
  Build: 94b44ff
 
   -d    run in debug mode
