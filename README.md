@@ -36,6 +36,7 @@ $ docker run -d --restart always \
 ## Usage
 
 ```console
+$ sshb0t -h
          _     _      ___  _
  ___ ___| |__ | |__  / _ \| |_
 / __/ __| '_ \| '_ \| | | | __|
@@ -43,11 +44,15 @@ $ docker run -d --restart always \
 |___/___/_| |_|_.__/ \___/ \__|
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
  Version: v0.3.0
+ Build: 94b44ff
+
   -d    run in debug mode
   -interval string
         update interval (ex. 5ms, 10s, 1m, 3h) (default "30s")
   -keyfile string
-        file to update the authorized_keys (default "/home/jess/.ssh/authorized_keys")
+        file to update the authorized_keys (default "/home/jessie/.ssh/authorized_keys")
+  -once
+        run once and exit, do not run as a daemon
   -user value
         GitHub usernames for which to fetch keys
   -v    print version and exit (shorthand)

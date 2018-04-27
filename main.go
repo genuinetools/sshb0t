@@ -29,6 +29,8 @@ const (
 |___/___/_| |_|_.__/ \___/ \__|
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
  Version: %s
+ Build: %s
+
 `
 )
 
@@ -36,7 +38,9 @@ var (
 	home               string
 	authorizedKeysFile string
 	users              stringSlice
-	interval           string
+
+	interval string
+	once     bool
 
 	debug bool
 	vrsn  bool
@@ -65,14 +69,16 @@ func init() {
 	// parse flags
 	flag.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
 	flag.Var(&users, "user", "GitHub usernames for which to fetch keys")
+
 	flag.StringVar(&interval, "interval", "30s", "update interval (ex. 5ms, 10s, 1m, 3h)")
+	flag.BoolVar(&once, "once", false, "run once and exit, do not run as a daemon")
 
 	flag.BoolVar(&vrsn, "version", false, "print version and exit")
 	flag.BoolVar(&vrsn, "v", false, "print version and exit (shorthand)")
 	flag.BoolVar(&debug, "d", false, "run in debug mode")
 
 	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, version.VERSION))
+		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, version.VERSION, version.GITCOMMIT))
 		flag.PrintDefaults()
 	}
 
@@ -133,38 +139,48 @@ func main() {
 	}
 	ticker = time.NewTicker(dur)
 
+	// If the user passed the once flag, just do the run once and exit.
+	if once {
+		run()
+		os.Exit(0)
+	}
+
 	logrus.Infof("Starting bot to update %s every %s for users %s", authorizedKeysFile, interval, strings.Join(users, ", "))
 	for range ticker.C {
-		// fetch the keys for each user
-		var keys string
-		for _, user := range users {
-			// fetch the url
-			url := fmt.Sprintf(defaultGitHubKeyURI, user)
-			logrus.Debugf("Fetching keys for user %s from %s", user, url)
-			resp, err := http.Get(url)
-			if err != nil {
-				logrus.Warnf("Fetching keys for user %s from %s failed: %v", user, url, err)
-			}
-			// make sure we got status 200
-			if http.StatusOK != resp.StatusCode {
-				logrus.Warnf("Expected status code 200 from %s but got %d for user %s", url, resp.StatusCode, user)
-			}
-			// read the body
-			b, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				logrus.Fatalf("Reading response body from %s for user %s failed: %v", url, user, err)
-			}
-			// append to keys variable with a new line
-			keys += string(b) + "\n"
-		}
-
-		// update the authorized key file
-		logrus.Infof("Updating authorized key file %s with keys from %s", authorizedKeysFile, strings.Join(users, ", "))
-		if err := ioutil.WriteFile(authorizedKeysFile, []byte(keys), 0600); err != nil {
-			logrus.Fatalf("Writing to file %s failed: %v", authorizedKeysFile, err)
-		}
-		logrus.Info("Successfully updated keys")
+		run()
 	}
+}
+
+func run() {
+	// fetch the keys for each user
+	var keys string
+	for _, user := range users {
+		// fetch the url
+		url := fmt.Sprintf(defaultGitHubKeyURI, user)
+		logrus.Debugf("Fetching keys for user %s from %s", user, url)
+		resp, err := http.Get(url)
+		if err != nil {
+			logrus.Warnf("Fetching keys for user %s from %s failed: %v", user, url, err)
+		}
+		// make sure we got status 200
+		if http.StatusOK != resp.StatusCode {
+			logrus.Warnf("Expected status code 200 from %s but got %d for user %s", url, resp.StatusCode, user)
+		}
+		// read the body
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			logrus.Fatalf("Reading response body from %s for user %s failed: %v", url, user, err)
+		}
+		// append to keys variable with a new line
+		keys += string(b) + "\n"
+	}
+
+	// update the authorized key file
+	logrus.Infof("Updating authorized key file %s with keys from %s", authorizedKeysFile, strings.Join(users, ", "))
+	if err := ioutil.WriteFile(authorizedKeysFile, []byte(keys), 0600); err != nil {
+		logrus.Fatalf("Writing to file %s failed: %v", authorizedKeysFile, err)
+	}
+	logrus.Info("Successfully updated keys")
 }
 
 func usageAndExit(message string, exitCode int) {
