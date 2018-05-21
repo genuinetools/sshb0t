@@ -161,18 +161,21 @@ func run() {
 		resp, err := http.Get(url)
 		if err != nil {
 			logrus.Warnf("Fetching keys for user %s from %s failed: %v", user, url, err)
+			continue
 		}
 		// make sure we got status 200
 		if http.StatusOK != resp.StatusCode {
 			logrus.Warnf("Expected status code 200 from %s but got %d for user %s", url, resp.StatusCode, user)
+			continue
 		}
 		// read the body
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			logrus.Fatalf("Reading response body from %s for user %s failed: %v", url, user, err)
+			continue
 		}
 		// append to keys variable with a new line
-		keys += string(b) + "\n"
+		keys += string(b)
 	}
 
 	// update the authorized key file
