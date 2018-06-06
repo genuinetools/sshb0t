@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"os/user"
@@ -18,7 +19,7 @@ import (
 )
 
 const (
-	defaultGitHubKeyURI          string = "https://%s/%s.keys"
+	defaultKeyURI                string = "%s/%s.keys"
 	defaultSSHAuthorizedKeysFile string = ".ssh/authorized_keys"
 
 	// BANNER is what is printed for help/info output
@@ -37,7 +38,7 @@ const (
 var (
 	home               string
 	authorizedKeysFile string
-	gitURI             string
+	enturl             string
 	users              stringSlice
 
 	interval string
@@ -69,7 +70,7 @@ func init() {
 
 	// parse flags
 	flag.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
-	flag.StringVar(&gitURI, "gituri", "github.com", "Add custom git URI (ex. gitlab.com, github.com)")
+	flag.StringVar(&enturl, "url", "https://github.com", "GitHub Enterprise URL")
 	flag.Var(&users, "user", "GitHub usernames for which to fetch keys")
 
 	flag.StringVar(&interval, "interval", "30s", "update interval (ex. 5ms, 10s, 1m, 3h)")
@@ -158,22 +159,27 @@ func run() {
 	var keys string
 	for _, user := range users {
 		// fetch the url
-		url := fmt.Sprintf(defaultGitHubKeyURI, user)
-		logrus.Debugf("Fetching keys for user %s from %s", user, url)
-		resp, err := http.Get(url)
+		uri := fmt.Sprintf(defaultKeyURI, enturl, user)
+		baseURL, err := url.Parse(uri)
 		if err != nil {
-			logrus.Warnf("Fetching keys for user %s from %s failed: %v", user, url, err)
+			logrus.Fatalf("parsing url %s failed: %v", uri, err)
+		}
+		uri = baseURL.String()
+		logrus.Debugf("Fetching keys for user %s from %s", user, uri)
+		resp, err := http.Get(uri)
+		if err != nil {
+			logrus.Warnf("Fetching keys for user %s from %s failed: %v", user, uri, err)
 			continue
 		}
 		// make sure we got status 200
 		if http.StatusOK != resp.StatusCode {
-			logrus.Warnf("Expected status code 200 from %s but got %d for user %s", url, resp.StatusCode, user)
+			logrus.Warnf("Expected status code 200 from %s but got %d for user %s", uri, resp.StatusCode, user)
 			continue
 		}
 		// read the body
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			logrus.Fatalf("Reading response body from %s for user %s failed: %v", url, user, err)
+			logrus.Fatalf("Reading response body from %s for user %s failed: %v", uri, user, err)
 			continue
 		}
 		// append to keys variable with a new line
