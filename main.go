@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
-	"os/user"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -210,9 +210,9 @@ func getHomeDir() (string, error) {
 		return home, nil
 	}
 
-	u, err := user.Current()
+	dir, err := homedir.Dir()
 	if err != nil {
 		return "", err
 	}
-	return u.HomeDir, nil
+	return dir, nil
 }
