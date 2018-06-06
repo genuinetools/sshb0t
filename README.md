@@ -47,6 +47,8 @@ $ sshb0t -h
  Build: 94b44ff
 
   -d    run in debug mode
+  -gituri string
+        Add custom git URI (ex. gitlab.com, github.com) (default "github.com")
   -interval string
         update interval (ex. 5ms, 10s, 1m, 3h) (default "30s")
   -keyfile string
