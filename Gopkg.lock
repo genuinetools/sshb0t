@@ -2,29 +2,35 @@
 
 
 [[projects]]
+  digest = "1:fb851541f5df335edb55ae691842a09ba4397bbf2deec9f7c5ad4a49de3fa44d"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
+  pruneopts = "NU"
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
   version = "v1.0.5"
 
 [[projects]]
   branch = "master"
+  digest = "1:ed359abd610d03004c519d6269e99c31d33bb218ba4f889985d30a5ada76d4df"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "2d027ae1dddd4694d54f7a8b6cbe78dca8720226"
+  pruneopts = "NU"
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
+  digest = "1:f18a84ee7d48acb0a402e5ae19df6c7df4d6d6db09593f60cd29d2b6e8c1cee4"
   name = "golang.org/x/sys"
   packages = [
     "unix",
-    "windows"
+    "windows",
   ]
-  revision = "d0faeb539838e250bd0a9db4182d48d4a1915181"
+  pruneopts = "NU"
+  revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ed0a18b3acac509bbbfab1a15f722a6b463119bc70386ae78f757200e667a8ec"
+  input-imports = ["github.com/sirupsen/logrus"]
   solver-name = "gps-cdcl"
   solver-version = 1
