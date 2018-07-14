@@ -28,6 +28,7 @@ const (
 / __/ __| '_ \| '_ \| | | | __|
 \__ \__ \ | | | |_) | |_| | |_
 |___/___/_| |_|_.__/ \___/ \__|
+
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
  Version: %s
  Build: %s
@@ -41,7 +42,7 @@ var (
 	enturl             string
 	users              stringSlice
 
-	interval string
+	interval time.Duration
 	once     bool
 
 	debug bool
@@ -73,7 +74,7 @@ func init() {
 	flag.StringVar(&enturl, "url", "https://github.com", "GitHub Enterprise URL")
 	flag.Var(&users, "user", "GitHub usernames for which to fetch keys")
 
-	flag.StringVar(&interval, "interval", "30s", "update interval (ex. 5ms, 10s, 1m, 3h)")
+	flag.DurationVar(&interval, "interval", 30*time.Second, "update interval (ex. 5ms, 10s, 1m, 3h)")
 	flag.BoolVar(&once, "once", false, "run once and exit, do not run as a daemon")
 
 	flag.BoolVar(&vrsn, "version", false, "print version and exit")
@@ -121,7 +122,7 @@ func init() {
 }
 
 func main() {
-	var ticker *time.Ticker
+	ticker := time.NewTicker(interval)
 
 	// On ^C, or SIGTERM handle exit.
 	c := make(chan os.Signal, 1)
@@ -134,13 +135,6 @@ func main() {
 			os.Exit(0)
 		}
 	}()
-
-	// parse the duration
-	dur, err := time.ParseDuration(interval)
-	if err != nil {
-		logrus.Fatalf("parsing %s as duration failed: %v", interval, err)
-	}
-	ticker = time.NewTicker(dur)
 
 	// If the user passed the once flag, just do the run once and exit.
 	if once {

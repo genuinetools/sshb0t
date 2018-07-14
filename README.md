@@ -42,15 +42,16 @@ $ sshb0t -h
 / __/ __| '_ \| '_ \| | | | __|
 \__ \__ \ | | | |_) | |_| | |_
 |___/___/_| |_|_.__/ \___/ \__|
+
  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
  Version: v0.3.2
- Build: 94b44ff
+ Build: 996b83e
 
   -d    run in debug mode
-  -interval string
-        update interval (ex. 5ms, 10s, 1m, 3h) (default "30s")
+  -interval duration
+        update interval (ex. 5ms, 10s, 1m, 3h) (default 30s)
   -keyfile string
-        file to update the authorized_keys (default "/home/jessie/.ssh/authorized_keys")
+        file to update the authorized_keys (default "~/.ssh/authorized_keys")
   -once
         run once and exit, do not run as a daemon
   -url string
