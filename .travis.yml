@@ -18,39 +18,39 @@ jobs:
       deploy:
         provider: releases
         file:
-          - cross/sshb0t-linux-amd64.md5
-          - cross/sshb0t-windows-386.sha256
-          - cross/sshb0t-linux-arm
-          - cross/sshb0t-darwin-amd64.md5
           - cross/sshb0t-darwin-amd64
-          - cross/sshb0t-solaris-amd64.md5
-          - cross/sshb0t-linux-arm64.sha256
-          - cross/sshb0t-linux-arm.sha256
-          - cross/sshb0t-linux-386.sha256
+          - cross/sshb0t-darwin-amd64.md5
+          - cross/sshb0t-darwin-amd64.sha256
+          - cross/sshb0t-darwin-386
           - cross/sshb0t-darwin-386.md5
-          - cross/sshb0t-windows-386.md5
+          - cross/sshb0t-darwin-386.sha256
+          - cross/sshb0t-freebsd-amd64
           - cross/sshb0t-freebsd-amd64.md5
-          - cross/sshb0t-linux-arm64.md5
-          - cross/sshb0t-linux-arm64
           - cross/sshb0t-freebsd-amd64.sha256
-          - cross/sshb0t-freebsd-386.md5
-          - cross/sshb0t-linux-amd64.sha256
-          - cross/sshb0t-linux-386.md5
           - cross/sshb0t-freebsd-386
+          - cross/sshb0t-freebsd-386.md5
+          - cross/sshb0t-freebsd-386.sha256
+          - cross/sshb0t-linux-arm
+          - cross/sshb0t-linux-arm.md5
+          - cross/sshb0t-linux-arm.sha256
+          - cross/sshb0t-linux-arm64
+          - cross/sshb0t-linux-arm64.md5
+          - cross/sshb0t-linux-arm64.sha256
+          - cross/sshb0t-linux-amd64
+          - cross/sshb0t-linux-amd64.md5
+          - cross/sshb0t-linux-amd64.sha256
+          - cross/sshb0t-linux-386
+          - cross/sshb0t-linux-386.md5
+          - cross/sshb0t-linux-386.sha256
+          - cross/sshb0t-solaris-amd64
+          - cross/sshb0t-solaris-amd64.md5
           - cross/sshb0t-solaris-amd64.sha256
           - cross/sshb0t-windows-amd64
           - cross/sshb0t-windows-amd64.md5
           - cross/sshb0t-windows-amd64.sha256
-          - cross/sshb0t-linux-arm.md5
-          - cross/sshb0t-darwin-386.sha256
-          - cross/sshb0t-darwin-amd64.sha256
           - cross/sshb0t-windows-386
-          - cross/sshb0t-solaris-amd64
-          - cross/sshb0t-darwin-386
-          - cross/sshb0t-linux-386
-          - cross/sshb0t-freebsd-amd64
-          - cross/sshb0t-freebsd-386.sha256
-          - cross/sshb0t-linux-amd64
+          - cross/sshb0t-windows-386.md5
+          - cross/sshb0t-windows-386.sha256
         skip_cleanup: true
         on:
           tags: true

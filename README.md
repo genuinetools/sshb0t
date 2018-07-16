@@ -1,6 +1,8 @@
 # sshb0t
 
-[![Travis CI](https://travis-ci.org/genuinetools/sshb0t.svg?branch=master)](https://travis-ci.org/genuinetools/sshb0t)
+[![Travis CI](https://img.shields.io/travis/genuinetools/sshb0t.svg?style=for-the-badge)](https://travis-ci.org/genuinetools/sshb0t)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/genuinetools/sshb0t)
+[![Github All Releases](https://img.shields.io/github/downloads/genuinetools/sshb0t/total.svg?style=for-the-badge)](https://github.com/genuinetools/sshb0t/releases)
 
 A bot for keeping your ssh `authorized_keys` up to date with user's GitHub keys
 from `https://github.com/{username}.keys`.
@@ -8,19 +10,21 @@ from `https://github.com/{username}.keys`.
 **WARNING:** Only use this if you have two factor auth enabled for your GitHub
 account and you make sure to delete old keys from your account.
 
+ * [Installation](README.md#installation)
+      * [Binaries](README.md#binaries)
+      * [Via Go](README.md#via-go)
+      * [Running with Docker](README.md#running-with-docker)
+ * [Usage](README.md#usage)
+
 ## Installation
 
 #### Binaries
 
-- **darwin** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-darwin-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-darwin-amd64)
-- **freebsd** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-freebsd-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-freebsd-amd64)
-- **linux** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-linux-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-linux-amd64) / [arm](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-linux-arm) / [arm64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-linux-arm64)
-- **solaris** [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-solaris-amd64)
-- **windows** [386](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-windows-386) / [amd64](https://github.com/genuinetools/sshb0t/releases/download/v0.3.3/sshb0t-windows-amd64)
+For installation instructions from binaries please visit the [Releases Page](https://github.com/genuinetools/sshb0t/releases).
 
 #### Via Go
 
-```bash
+```console
 $ go get github.com/genuinetools/sshb0t
 ```
 
