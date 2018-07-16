@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -14,6 +16,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/genuinetools/pkg/cli"
 	"github.com/genuinetools/sshb0t/version"
 	"github.com/sirupsen/logrus"
 )
@@ -21,19 +24,6 @@ import (
 const (
 	defaultKeyURI                string = "%s/%s.keys"
 	defaultSSHAuthorizedKeysFile string = ".ssh/authorized_keys"
-
-	// BANNER is what is printed for help/info output
-	BANNER = `         _     _      ___  _
- ___ ___| |__ | |__  / _ \| |_
-/ __/ __| '_ \| '_ \| | | | __|
-\__ \__ \ | | | |_) | |_| | |_
-|___/___/_| |_|_.__/ \___/ \__|
-
- A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
- Version: %s
- Build: %s
-
-`
 )
 
 var (
@@ -46,7 +36,6 @@ var (
 	once     bool
 
 	debug bool
-	vrsn  bool
 )
 
 // stringSlice is a slice of strings
@@ -61,7 +50,7 @@ func (s *stringSlice) Set(value string) error {
 	return nil
 }
 
-func init() {
+func main() {
 	var err error
 	// get the home directory
 	home, err = getHomeDir()
@@ -69,83 +58,75 @@ func init() {
 		logrus.Fatalf("getHomeDir failed: %v", err)
 	}
 
-	// parse flags
-	flag.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
-	flag.StringVar(&enturl, "url", "https://github.com", "GitHub Enterprise URL")
-	flag.Var(&users, "user", "GitHub usernames for which to fetch keys")
+	// Create a new cli program.
+	p := cli.NewProgram()
+	p.Name = "sshb0t"
+	p.Description = "A bot for keeping your ssh authorized_keys up to date with user's GitHub keys"
 
-	flag.DurationVar(&interval, "interval", 30*time.Second, "update interval (ex. 5ms, 10s, 1m, 3h)")
-	flag.BoolVar(&once, "once", false, "run once and exit, do not run as a daemon")
+	// Set the GitCommit and Version.
+	p.GitCommit = version.GITCOMMIT
+	p.Version = version.VERSION
 
-	flag.BoolVar(&vrsn, "version", false, "print version and exit")
-	flag.BoolVar(&vrsn, "v", false, "print version and exit (shorthand)")
-	flag.BoolVar(&debug, "d", false, "run in debug mode")
+	// Setup the global flags.
+	p.FlagSet = flag.NewFlagSet("global", flag.ExitOnError)
+	p.FlagSet.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
+	p.FlagSet.StringVar(&enturl, "url", "https://github.com", "GitHub Enterprise URL")
+	p.FlagSet.Var(&users, "user", "GitHub usernames for which to fetch keys")
 
-	flag.Usage = func() {
-		fmt.Fprint(os.Stderr, fmt.Sprintf(BANNER, version.VERSION, version.GITCOMMIT))
-		flag.PrintDefaults()
-	}
+	p.FlagSet.DurationVar(&interval, "interval", 30*time.Second, "update interval (ex. 5ms, 10s, 1m, 3h)")
+	p.FlagSet.BoolVar(&once, "once", false, "run once and exit, do not run as a daemon")
 
-	flag.Parse()
+	p.FlagSet.BoolVar(&debug, "d", false, "enable debug logging")
 
-	if vrsn {
-		fmt.Printf("sshb0t version %s, build %s", version.VERSION, version.GITCOMMIT)
-		os.Exit(0)
-	}
-
-	if flag.NArg() >= 1 {
-		// parse the arg
-		arg := flag.Args()[0]
-
-		if arg == "help" {
-			usageAndExit("", 0)
+	// Set the before function.
+	p.Before = func(ctx context.Context) error {
+		// Set the log level.
+		if debug {
+			logrus.SetLevel(logrus.DebugLevel)
 		}
 
-		if arg == "version" {
-			fmt.Printf("sshb0t version %s, build %s", version.VERSION, version.GITCOMMIT)
+		if len(users) < 1 {
+			return errors.New("you must pass at least one username")
+		}
+
+		if len(authorizedKeysFile) < 1 {
+			return errors.New("you must pass a file to save the authorized keys into or use the default")
+		}
+		return nil
+	}
+
+	// Set the main program action.
+	p.Action = func(ctx context.Context, args []string) error {
+		ticker := time.NewTicker(interval)
+
+		// On ^C, or SIGTERM handle exit.
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt)
+		signal.Notify(c, syscall.SIGTERM)
+		go func() {
+			for sig := range c {
+				ticker.Stop()
+				logrus.Infof("Received %s, exiting.", sig.String())
+				os.Exit(0)
+			}
+		}()
+
+		// If the user passed the once flag, just do the run once and exit.
+		if once {
+			run()
 			os.Exit(0)
 		}
-	}
 
-	if len(users) < 1 {
-		usageAndExit("you must pass at least one username", 1)
-	}
-
-	if len(authorizedKeysFile) < 1 {
-		usageAndExit("you must pass a file to save the authorized keys into or use the default", 1)
-	}
-
-	// set log level
-	if debug {
-		logrus.SetLevel(logrus.DebugLevel)
-	}
-}
-
-func main() {
-	ticker := time.NewTicker(interval)
-
-	// On ^C, or SIGTERM handle exit.
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	signal.Notify(c, syscall.SIGTERM)
-	go func() {
-		for sig := range c {
-			ticker.Stop()
-			logrus.Infof("Received %s, exiting.", sig.String())
-			os.Exit(0)
+		logrus.Infof("Starting bot to update %s every %s for users %s", authorizedKeysFile, interval, strings.Join(users, ", "))
+		for range ticker.C {
+			run()
 		}
-	}()
 
-	// If the user passed the once flag, just do the run once and exit.
-	if once {
-		run()
-		os.Exit(0)
+		return nil
 	}
 
-	logrus.Infof("Starting bot to update %s every %s for users %s", authorizedKeysFile, interval, strings.Join(users, ", "))
-	for range ticker.C {
-		run()
-	}
+	// Run our program.
+	p.Run()
 }
 
 func run() {
@@ -186,16 +167,6 @@ func run() {
 		logrus.Fatalf("Writing to file %s failed: %v", authorizedKeysFile, err)
 	}
 	logrus.Info("Successfully updated keys")
-}
-
-func usageAndExit(message string, exitCode int) {
-	if message != "" {
-		fmt.Fprintf(os.Stderr, message)
-		fmt.Fprintf(os.Stderr, "\n\n")
-	}
-	flag.Usage()
-	fmt.Fprintf(os.Stderr, "\n")
-	os.Exit(exitCode)
 }
 
 func getHomeDir() (string, error) {

@@ -41,32 +41,22 @@ $ docker run -d --restart always \
 
 ```console
 $ sshb0t -h
-         _     _      ___  _
- ___ ___| |__ | |__  / _ \| |_
-/ __/ __| '_ \| '_ \| | | | __|
-\__ \__ \ | | | |_) | |_| | |_
-|___/___/_| |_|_.__/ \___/ \__|
+sshb0t -  A bot for keeping your ssh authorized_keys up to date with user's GitHub keys.
 
- A bot for keeping your ssh authorized_keys up to date with user's GitHub keys
- Version: v0.3.3
- Build: 996b83e
+Usage: sshb0t <command>
 
-  -d    run in debug mode
-  -interval duration
-        update interval (ex. 5ms, 10s, 1m, 3h) (default 30s)
-  -keyfile string
-        file to update the authorized_keys (default "~/.ssh/authorized_keys")
-  -once
-        run once and exit, do not run as a daemon
-  -url string
-        GitHub Enterprise URL (default "https://github.com")
-  -user value
-        GitHub usernames for which to fetch keys
-  -v    print version and exit (shorthand)
-  -version
-        print version and exit
+Flags:
+
+  --url       GitHub Enterprise URL (default: https://github.com)
+  --user      GitHub usernames for which to fetch keys (default: [])
+  -d          enable debug logging (default: false)
+  --interval  update interval (ex. 5ms, 10s, 1m, 3h) (default: 30s)
+  --keyfile   file to update the authorized_keys (default: /home/jessie/.ssh/authorized_keys)
+  --once      run once and exit, do not run as a daemon (default: false)
+
+Commands:
+
+  version  Show the version information.
 ```
-
-
 
 [![Analytics](https://ga-beacon.appspot.com/UA-29404280-16/sshb0t/README.md)](https://github.com/genuinetools/sshb0t)
