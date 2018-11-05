@@ -31,6 +31,7 @@ var (
 	authorizedKeysFile string
 	enturl             string
 	users              stringSlice
+	ignored            stringSlice
 
 	interval time.Duration
 	once     bool
@@ -72,6 +73,7 @@ func main() {
 	p.FlagSet.StringVar(&authorizedKeysFile, "keyfile", filepath.Join(home, defaultSSHAuthorizedKeysFile), "file to update the authorized_keys")
 	p.FlagSet.StringVar(&enturl, "url", "https://github.com", "GitHub Enterprise URL")
 	p.FlagSet.Var(&users, "user", "GitHub usernames for which to fetch keys")
+	p.FlagSet.Var(&ignored, "ignore", "ignore SSH keys that match")
 
 	p.FlagSet.DurationVar(&interval, "interval", 30*time.Second, "update interval (ex. 5ms, 10s, 1m, 3h)")
 	p.FlagSet.BoolVar(&once, "once", false, "run once and exit, do not run as a daemon")
@@ -157,8 +159,14 @@ func run() {
 			logrus.Fatalf("Reading response body from %s for user %s failed: %v", uri, user, err)
 			continue
 		}
-		// append to keys variable with a new line
-		keys += string(b)
+
+		for _, key := range strings.Split(string(b), "\n") {
+			if isIgnored(key) {
+				continue
+			}
+			// append to keys variable with a new line
+			keys += key + "\n"
+		}
 	}
 
 	// update the authorized key file
@@ -167,6 +175,15 @@ func run() {
 		logrus.Fatalf("Writing to file %s failed: %v", authorizedKeysFile, err)
 	}
 	logrus.Info("Successfully updated keys")
+}
+
+func isIgnored(key string) bool {
+	for _, i := range ignored {
+		if strings.Contains(key, i) {
+			return true
+		}
+	}
+	return false
 }
 
 func getHomeDir() (string, error) {
