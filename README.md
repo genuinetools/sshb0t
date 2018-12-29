@@ -14,6 +14,12 @@ account and you make sure to delete old keys from your account.
 
 <!-- toc -->
 
+- [Installation](#installation)
+    + [Binaries](#binaries)
+    + [Via Go](#via-go)
+    + [Running with Docker](#running-with-docker)
+- [Usage](#usage)
+
 <!-- tocstop -->
 
 ## Installation
