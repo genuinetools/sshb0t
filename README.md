@@ -10,11 +10,11 @@ from `https://github.com/{username}.keys`.
 **WARNING:** Only use this if you have two factor auth enabled for your GitHub
 account and you make sure to delete old keys from your account.
 
- * [Installation](README.md#installation)
-      * [Binaries](README.md#binaries)
-      * [Via Go](README.md#via-go)
-      * [Running with Docker](README.md#running-with-docker)
- * [Usage](README.md#usage)
+**Table of Contents**
+
+<!-- toc -->
+
+<!-- tocstop -->
 
 ## Installation
 
