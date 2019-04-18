@@ -166,7 +166,8 @@ func run() {
 	}
 
 	if successes < 1 {
-		logrus.Fatalf("Unable to fetch any user keys, aborting")
+		logrus.Warnf("Unable to fetch any user keys, not updating authorized keys file")
+		return
 	}
 
 	// update the authorized key file
