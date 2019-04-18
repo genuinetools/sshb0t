@@ -131,7 +131,10 @@ func main() {
 
 func run() {
 	// fetch the keys for each user
-	var keys string
+	var (
+		keys      string
+		successes int
+	)
 	for _, user := range users {
 		// fetch the url
 		uri := fmt.Sprintf(defaultKeyURI, enturl, user)
@@ -159,6 +162,11 @@ func run() {
 		}
 		// append to keys variable with a new line
 		keys += string(b)
+		successes++
+	}
+
+	if successes < 1 {
+		logrus.Fatalf("Unable to fetch any user keys, aborting")
 	}
 
 	// update the authorized key file
