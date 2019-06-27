@@ -53,12 +53,13 @@ Usage: sshb0t <command>
 
 Flags:
 
-  --url       GitHub Enterprise URL (default: https://github.com)
-  --user      GitHub usernames for which to fetch keys (default: [])
   -d          enable debug logging (default: false)
+  --ignore    ignore SSH keys that match (default: [])
   --interval  update interval (ex. 5ms, 10s, 1m, 3h) (default: 30s)
   --keyfile   file to update the authorized_keys (default: /home/jessie/.ssh/authorized_keys)
   --once      run once and exit, do not run as a daemon (default: false)
+  --url       GitHub Enterprise URL (default: https://github.com)
+  --user      GitHub usernames for which to fetch keys (default: [])
 
 Commands:
 
