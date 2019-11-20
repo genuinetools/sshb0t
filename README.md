@@ -1,6 +1,7 @@
 # sshb0t
 
-[![Travis CI](https://img.shields.io/travis/genuinetools/sshb0t.svg?style=for-the-badge)](https://travis-ci.org/genuinetools/sshb0t)
+![make-all](https://github.com/genuinetools/sshb0t/workflows/make%20all/badge.svg)
+![make-image](https://github.com/genuinetools/sshb0t/workflows/make%20image/badge.svg)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-5272B4.svg?style=for-the-badge)](https://godoc.org/github.com/genuinetools/sshb0t)
 [![Github All Releases](https://img.shields.io/github/downloads/genuinetools/sshb0t/total.svg?style=for-the-badge)](https://github.com/genuinetools/sshb0t/releases)
 
@@ -12,15 +13,8 @@ account and you make sure to delete old keys from your account.
 
 **Table of Contents**
 
-<!-- toc -->
-
-- [Installation](#installation)
-    + [Binaries](#binaries)
-    + [Via Go](#via-go)
-    + [Running with Docker](#running-with-docker)
-- [Usage](#usage)
-
-<!-- tocstop -->
+<!-- START doctoc -->
+<!-- END doctoc -->
 
 ## Installation
 
