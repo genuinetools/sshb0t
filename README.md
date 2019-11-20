@@ -11,8 +11,6 @@ from `https://github.com/{username}.keys`.
 **WARNING:** Only use this if you have two factor auth enabled for your GitHub
 account and you make sure to delete old keys from your account.
 
-**Table of Contents**
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
